@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "title": "Расписание 2 Г класс 2 смена",
+  "language": "ru",
+  "timezone": "Europe/Moscow",
+  "class": "2 Г",
+  "shift": 2,
+  "time_slots": [
+    { "lesson_number": 0, "start": "12:45", "end": "13:25" },
+    { "lesson_number": 1, "start": "13:30", "end": "14:10" },
+    { "lesson_number": 2, "start": "14:20", "end": "15:00" },
+    { "lesson_number": 3, "start": "15:10", "end": "15:50" },
+    { "lesson_number": 4, "start": "15:55", "end": "16:35" },
+    { "lesson_number": 5, "start": "16:40", "end": "17:20" }
+  ],
+  "days": [
+    {
+      "weekday": "monday",
+      "iso_weekday": 1,
+      "label": "Понедельник",
+      "lessons": [
+        { "lesson_number": 0, "subject": "Логика" },
+        { "lesson_number": 1, "subject": "Русский" },
+        { "lesson_number": 2, "subject": "Математика" },
+        { "lesson_number": 3, "subject": "Лит.чтение (РоВ)" },
+        { "lesson_number": 4, "subject": "ФЗК" },
+        { "lesson_number": 5, "subject": null }
+      ]
+    },
+    {
+      "weekday": "tuesday",
+      "iso_weekday": 2,
+      "label": "Вторник",
+      "lessons": [
+        { "lesson_number": 0, "subject": "Риторика" },
+        { "lesson_number": 1, "subject": "Математика" },
+        { "lesson_number": 2, "subject": "ИЗО" },
+        { "lesson_number": 3, "subject": "Русский" },
+        { "lesson_number": 4, "subject": "Окружающий" },
+        { "lesson_number": 5, "subject": "Лит.чтение" }
+      ]
+    },
+    {
+      "weekday": "wednesday",
+      "iso_weekday": 3,
+      "label": "Среда",
+      "lessons": [
+        { "lesson_number": 0, "subject": "Логика" },
+        { "lesson_number": 1, "subject": "Русский" },
+        { "lesson_number": 2, "subject": "ФЗК" },
+        { "lesson_number": 3, "subject": "Математика" },
+        { "lesson_number": 4, "subject": "Англ.яз." },
+        { "lesson_number": 5, "subject": "Лит.чтение" }
+      ]
+    },
+    {
+      "weekday": "thursday",
+      "iso_weekday": 4,
+      "label": "Четверг",
+      "lessons": [
+        { "lesson_number": 0, "subject": "Русский" },
+        { "lesson_number": 1, "subject": "Математика" },
+        { "lesson_number": 2, "subject": "Англ.яз." },
+        { "lesson_number": 3, "subject": "Музыка" },
+        { "lesson_number": 4, "subject": "Лит.чтение" },
+        { "lesson_number": 5, "subject": null }
+      ]
+    },
+    {
+      "weekday": "friday",
+      "iso_weekday": 5,
+      "label": "Пятница",
+      "lessons": [
+        { "lesson_number": 0, "subject": "Риторика" },
+        { "lesson_number": 1, "subject": "Русский" },
+        { "lesson_number": 2, "subject": "Окружающий" },
+        { "lesson_number": 3, "subject": "Математика и конст." },
+        { "lesson_number": 4, "subject": "Труд (технология)" },
+        { "lesson_number": 5, "subject": null }
+      ]
+    }
+  ],
+  "extra_classes": [
+    {
+      "weekday": "tuesday",
+      "iso_weekday": 2,
+      "subject": "Английский язык",
+      "start": "09:30",
+      "end": "10:30"
+    },
+    {
+      "weekday": "thursday",
+      "iso_weekday": 4,
+      "subject": "Английский язык",
+      "start": "10:30",
+      "end": "11:30"
+    }
+  ],
+  "notes": [
+    "Все часы указаны по московскому времени (Europe/Moscow); часовой пояс подтверждён пользователем.",
+    "Названия предметов и сокращения сохранены по фотографии; пробелы нормализованы.",
+    "Значение subject: null обозначает пустую ячейку в исходном расписании.",
+    "Дополнительные занятия указаны со слов пользователя; продолжительность каждого занятия английским языком — 1 час."
+  ]
+}

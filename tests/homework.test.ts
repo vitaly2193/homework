@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import schedule from '../lib/school-schedule.json' with {type:'json'};
+import { moscowToday,nextSchoolDay,nextSubjectDate,missingSubjects,canonical,type Assignment } from '../lib/homework.ts';
+test('Moscow date follows Moscow midnight, not the device timezone',()=>{assert.equal(moscowToday(new Date('2026-09-17T21:01:00Z')),'2026-09-18');});
+test('Friday homework view targets Monday',()=>{assert.equal(nextSchoolDay('2026-09-18',schedule),'2026-09-21');});
+test('Weekly subject deadline and extra English use their actual timetable',()=>{assert.equal(nextSubjectDate('Музыка','2026-09-17',schedule),'2026-09-24');assert.equal(nextSubjectDate('Доп. английский','2026-09-17',schedule),'2026-09-22');});
+test('Completed work and explicit no-homework both count as known, empty records do not',()=>{const work=[{subject:'Русский язык',due_date:'2026-09-21',status:'done'}] as Assignment[];const unknown=missingSubjects('2026-09-21',schedule,work,[{family_id:'test',subject:'Математика',due_date:'2026-09-21'}]);assert.ok(!unknown.includes('Русский язык'));assert.ok(!unknown.includes('Математика'));assert.ok(unknown.includes('Литературное чтение'));});
+test('Source reading variants map to one homework subject',()=>{assert.equal(canonical('Лит.чтение (РоВ)'),canonical('Лит.чтение'));});
+import { validateDraftInput } from '../lib/webmcp.ts';
+test('Agent draft entry rejects invalid dates and subjects',()=>{assert.throws(()=>validateDraftInput({subject:'Русский язык',body:'test',due_date:'2026-02-30'},['Русский язык']));assert.throws(()=>validateDraftInput({subject:'Unknown',body:'test',due_date:'2026-09-18'},['Русский язык']));assert.equal(validateDraftInput({subject:'Русский язык',body:'стр. 25',due_date:'2026-09-18'},['Русский язык']).body,'стр. 25');});
