@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { BookOpen, CalendarDays, CheckCheck, Plus, Bell, LogOut, ArrowRight, Clock3, Download, RefreshCw, Users, Pencil, Image as ImageIcon, X, ListChecks } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -17,6 +17,7 @@ const blank = (subject:string,date:string):Draft=>({subject,body:'',due_date:dat
 
 export default function Home() {
  const [session,setSession]=useState<Session|null>(null), [ready,setReady]=useState(false);
+ const activeUser=useRef<string|null>(null);
  const [family,setFamily]=useState<Family|null>(null), [assignments,setAssignments]=useState<Assignment[]>([]), [checks,setChecks]=useState<LessonCheck[]>([]);
  const [tab,setTab]=useState('homework'), [filter,setFilter]=useState('next'), [today,setToday]=useState(moscowToday());
  const [error,setError]=useState(''), [notice,setNotice]=useState(''), [busy,setBusy]=useState(false), [loading,setLoading]=useState(false);
@@ -33,21 +34,23 @@ export default function Home() {
  const fail=(e:unknown)=>setError(e instanceof Error?e.message:typeof e==='object'&&e&&'message' in e?String(e.message):'Не удалось сохранить. Попробуйте ещё раз.');
 
  const refresh=useCallback(async()=>{
+  const expectedUser=activeUser.current;if(!expectedUser)return;
   setLoading(true);
   try {
    const {data:f,error:fe}=await supabase.from('families').select('*').maybeSingle(); if(fe)throw fe;
+   if(activeUser.current!==expectedUser)return;
    setFamily(f);
    if(f){
     const [a,c,r]=await Promise.all([supabase.from('assignments').select('*').eq('family_id',f.id).order('due_date').order('created_at'),supabase.from('lesson_checks').select('*').eq('family_id',f.id),supabase.from('reminder_settings').select('*').maybeSingle()]);
     if(a.error)throw a.error;if(c.error)throw c.error;if(r.error)throw r.error;
+    if(activeUser.current!==expectedUser)return;
     setAssignments(a.data||[]);setChecks(c.data||[]);setReminderTime(r.data?.reminder_time?.slice(0,5)||'19:00');
     if('serviceWorker' in navigator){const reg=await navigator.serviceWorker.getRegistration();const sub=await reg?.pushManager?.getSubscription();setPushEnabled(Boolean(sub&&r.data?.enabled));}
    }
   }catch(e){fail(e);}finally{setLoading(false);}
  },[]);
  useEffect(()=>{
-  supabase.auth.getSession().then(({data,error})=>{if(error)fail(error);setSession(data.session);setReady(true);});
-  const {data}=supabase.auth.onAuthStateChange((_event,s)=>{setSession(s);setReady(true);if(!s){setFamily(null);setAssignments([]);setChecks([]);}});
+  const {data}=supabase.auth.onAuthStateChange((_event,s)=>{const id=s?.user.id||null;if(activeUser.current!==id){setFamily(null);setAssignments([]);setChecks([]);setInvite('');setDraft(null);setAttachment(null);}activeUser.current=id;setSession(s);setReady(true);});
   if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
   const update=()=>{setToday(moscowToday());setOnline(navigator.onLine);};update();
   window.addEventListener('online',update);window.addEventListener('offline',update);const timer=setInterval(update,60000);

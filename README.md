@@ -53,3 +53,11 @@ The original imported timetable is `lib/school-schedule.json`. Each family store
 ## Scope
 
 MAX messages are pasted manually or attached as screenshots. Automatic MAX ingestion and AI extraction are not enabled. Records refresh on focus and every 30 seconds while visible. Offline editing is not enabled.
+
+## Current deployment status
+
+Supabase migrations 001–004 and the `send-reminders` function are deployed; its scheduled check is active. The reminder endpoint returned HTTP 200 with no subscribed devices. Database isolation/deduplication tests passed and left no test records.
+
+The Cloudflare Pages project `homework-2193` was created, but **the website has not been deployed**: browser upload permission was declined. GitHub push also remains pending because command-line Git has no authenticated credential. The source is committed locally.
+
+Six logic tests, TypeScript checking, and the production build passed. Dependency audit reported no known vulnerabilities after updates. Phone push delivery, account onboarding, and browser interaction QA remain to be checked. WebMCP draft/read tools are implemented but have not been verified in an authenticated supported browser context.
